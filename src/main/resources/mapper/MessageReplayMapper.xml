@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.MessageReplayMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.MessageReplay">
+        <result column="id" property="id"/>
+        <result column="message_id" property="messageId"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creater_id" property="createrId"/>
+    </resultMap>
+    <select id="queryPage" resultType="com.cry.flutter.admin.vo.MessageReplayVO">
+        select (select t1.avatar_url from user_info t1 where t1.user_id = t.creater_id) avatar_url, t.*
+        from message_replay t ${ew.customSqlSegment};
+    </select>
+
+</mapper>

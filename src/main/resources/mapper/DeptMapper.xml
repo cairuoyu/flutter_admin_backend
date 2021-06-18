@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.DeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.Dept">
+    <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="name_short" property="nameShort" />
+        <result column="pid" property="pid" />
+        <result column="header_id" property="headerId" />
+        <result column="fun" property="fun" />
+        <result column="remark" property="remark" />
+        <result column="order_by" property="orderBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="creater_id" property="createrId" />
+        <result column="update_id" property="updateId" />
+    </resultMap>
+    <select id="query" resultMap="BaseResultMap">
+        SELECT
+            T.*
+        FROM
+            dept T,
+            (SELECT
+                 @DATAK:=(SELECT
+                    GROUP_CONCAT(T.ID)
+                FROM
+                    dept T
+                WHERE
+                    NAME LIKE '%${dept.name}%')
+            ) zz,
+            (SELECT @DATAS:=GETPARENTID_BAS_BASIC_TREE_MORE(@DATAK)) x
+        WHERE
+            FIND_IN_SET(T.ID, @DATAS)
+    </select>
+
+</mapper>

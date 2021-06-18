@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.Role">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="name_en" property="nameEn"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creater_id" property="createrId"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <select id="getMenu" resultType="com.cry.flutter.admin.vo.MenuVO">
+        SELECT (SELECT IFNULL((SELECT TRUE
+                               FROM role_menu t1
+                               WHERE t1.menu_id = t.id
+                                 AND t1.role_id = #{roleId}),
+                              0)
+               ) checked,
+               t.*
+        FROM menu t
+        where t.subsystem_id = #{subsystemId}
+        ORDER BY t.order_by
+    </select>
+
+</mapper>

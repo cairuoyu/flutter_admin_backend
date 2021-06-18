@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.UserInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.UserInfo">
+    <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="nick_name" property="nickName" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="gender" property="gender" />
+        <result column="country" property="country" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="name" property="name" />
+        <result column="school" property="school" />
+        <result column="major" property="major" />
+        <result column="birthday" property="birthday" />
+        <result column="entrance" property="entrance" />
+        <result column="hometown" property="hometown" />
+        <result column="memo" property="memo" />
+        <result column="dept_id" property="deptId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+    <select id="queryPage" resultType="com.cry.flutter.admin.wrapper.UserInofWrapper">
+        SELECT
+            (SELECT
+                 name
+             FROM
+                 dept t1
+             WHERE
+                 t1.id = t.dept_id) dept_name,
+            t.*
+        FROM
+            user_info t ${ew.customSqlSegment};
+    </select>
+
+</mapper>

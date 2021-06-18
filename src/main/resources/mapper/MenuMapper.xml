@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.Menu">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="name_en" property="nameEn"/>
+        <result column="icon" property="icon"/>
+        <result column="pid" property="pid"/>
+        <result column="url" property="url"/>
+        <result column="module" property="module"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="order_by" property="orderBy"/>
+        <result column="subsystem_id" property="subsystemId"/>
+    </resultMap>
+    <select id="getMenuList" resultMap="BaseResultMap">
+        SELECT
+            t.*
+        FROM
+            menu t
+        WHERE
+                id IN (SELECT
+                           t1.menu_id
+                       FROM
+                           role_menu t1,
+                           role_user t2
+                       WHERE
+                           t1.role_id = t2.role_id
+                         AND t2.user_id = #{userId})
+          and t.subsystem_id=#{subsystemId}
+        ORDER BY t.order_by
+    </select>
+
+</mapper>

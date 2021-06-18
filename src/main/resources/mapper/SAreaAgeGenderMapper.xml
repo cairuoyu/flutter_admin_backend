@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cry.flutter.admin.mapper.SAreaAgeGenderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cry.flutter.admin.entity.SAreaAgeGender">
+    <result column="id" property="id" />
+        <result column="area" property="area" />
+        <result column="age" property="age" />
+        <result column="age_g1" property="ageG1" />
+        <result column="age_g2" property="ageG2" />
+        <result column="age1" property="age1" />
+        <result column="age1_g1" property="age1G1" />
+        <result column="age1_g2" property="age1G2" />
+        <result column="age2" property="age2" />
+        <result column="age2_g1" property="age2G1" />
+        <result column="age2_g2" property="age2G2" />
+        <result column="age3" property="age3" />
+        <result column="age3_g1" property="age3G1" />
+        <result column="age3_g2" property="age3G2" />
+        <result column="age4" property="age4" />
+        <result column="age4_g1" property="age4G1" />
+        <result column="age4_g2" property="age4G2" />
+        <result column="age5" property="age5" />
+        <result column="age5_g1" property="age5G1" />
+        <result column="age5_g2" property="age5G2" />
+        <result column="age6" property="age6" />
+        <result column="age6_g1" property="age6G1" />
+        <result column="age6_g2" property="age6G2" />
+        <result column="age7" property="age7" />
+        <result column="age7_g1" property="age7G1" />
+        <result column="age7_g2" property="age7G2" />
+        <result column="age8" property="age8" />
+        <result column="age8_g1" property="age8G1" />
+        <result column="age8_g2" property="age8G2" />
+        <result column="age9" property="age9" />
+        <result column="age9_g1" property="age9G1" />
+        <result column="age9_g2" property="age9G2" />
+        <result column="age10" property="age10" />
+        <result column="age10_g1" property="age10G1" />
+        <result column="age10_g2" property="age10G2" />
+        <result column="age11" property="age11" />
+        <result column="age11_g1" property="age11G1" />
+        <result column="age11_g2" property="age11G2" />
+        <result column="age12" property="age12" />
+        <result column="age12_g1" property="age12G1" />
+        <result column="age12_g2" property="age12G2" />
+        <result column="age13" property="age13" />
+        <result column="age13_g1" property="age13G1" />
+        <result column="age13_g2" property="age13G2" />
+        <result column="age14" property="age14" />
+        <result column="age14_g1" property="age14G1" />
+        <result column="age14_g2" property="age14G2" />
+        <result column="age15" property="age15" />
+        <result column="age15_g1" property="age15G1" />
+        <result column="age15_g2" property="age15G2" />
+        <result column="age16" property="age16" />
+        <result column="age16_g1" property="age16G1" />
+        <result column="age16_g2" property="age16G2" />
+        <result column="age17" property="age17" />
+        <result column="age17_g1" property="age17G1" />
+        <result column="age17_g2" property="age17G2" />
+        <result column="age18" property="age18" />
+        <result column="age18_g1" property="age18G1" />
+        <result column="age18_g2" property="age18G2" />
+        <result column="age19" property="age19" />
+        <result column="age19_g1" property="age19G1" />
+        <result column="age19_g2" property="age19G2" />
+        <result column="age20" property="age20" />
+        <result column="age20_g1" property="age20G1" />
+        <result column="age20_g2" property="age20G2" />
+        <result column="age21" property="age21" />
+        <result column="age21_g1" property="age21G1" />
+        <result column="age21_g2" property="age21G2" />
+        <result column="age22" property="age22" />
+        <result column="age22_g1" property="age22G1" />
+        <result column="age22_g2" property="age22G2" />
+    </resultMap>
+
+</mapper>
