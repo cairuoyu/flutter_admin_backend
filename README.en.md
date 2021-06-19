@@ -6,46 +6,45 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/cairuoyu/flutter_admin_backend?color=yellow)
 ![Flutter version](https://img.shields.io/badge/java-1.8-red)
 
->  简体中文 | [English](./README.en.md)
+> [简体中文](./README.md) | English
 
-> 使用Java、Flutter实现的一个后台管理系统。本项目为后端，对应的前端为 https://github.com/cairuoyu/flutter_admin。
+> Using Java, Flutter implementation of a backend management system. This project is the back end, and the corresponding front end is https://github.com/cairuoyu/flutter_admin。
 
 ---
-## 功能
-* 用户注册
-* 登录登出
-* 功能菜单
+## Functional
+* User Registration
+* Login And Logout
+* Function Menu
 * Dashboard
-* 角色管理
-* 用户管理
-* 部门管理
-* 菜单管理
-* 文章管理
-* 图片上传
-* 视频上传
-* 人员管理
-* 数据字典管理
-* 留言
-* 我的信息
-* 图表
-* 国际化
-* 语言切换
-* 主题切换
-* 字体切换
-* 独立配置文件
-* 组件封装
-* 导入导出Excel
+* Role Management
+* User Management
+* Menu Management
+* Article Management
+* upload Picture
+* Video Upload
+* Personnel Management
+* Data Dictionary Management
+* Message
+* My Information
+* Chart
+* Globalization
+* Language Switch
+* Theme Switch
+* Font Switch
+* Standalone configuration file
+* Component packaging
+* Import or Export Excle
 
-## 技术
-| 名称   | 技术                |
-| ------ | ------------------- |
-| 语言   | Java                |
-| 通用包 | Spring、Spring Boot |
-| 数据   | Mybatis-plus        |
-| 环境   | Maven               |
-| 权限   | JWT                 |
+## Technology
+| Name            | Technology          |
+| --------------- | ------------------- |
+| Language        | Java                |
+| General Library | Spring、Spring Boot |
+| Data            | Mybatis-plus        |
+| Environment     | Maven               |
+| Permissions     | JWT                 |
 
-## 代码结构
+## The code structure
 ```
 ├─src
 │  └─main
@@ -53,22 +52,22 @@
 │      │      └─cry
 │      │          └─flutter
 │      │              └─admin
-│      │                  ├─common	公共类
-│      │                  ├─config	配置
-│      │                  ├─constants	常量类
-│      │                  ├─controller	控制类
-│      │                  ├─entity	实体类
-│      │                  ├─mapper	映射
-│      │                  ├─service	服务
+│      │                  ├─common
+│      │                  ├─config
+│      │                  ├─constants
+│      │                  ├─controller
+│      │                  ├─entity
+│      │                  ├─mapper
+│      │                  ├─service
 │      │                  │  └─impl
-│      │                  ├─utils	工具
+│      │                  ├─utils
 │      │                  ├─vo
-│      │                  └─wrapper	对象封装
+│      │                  └─wrapper
 │      └─resources
-│          └─mapper	映射配置文件
+│          └─mapper
 ```
 
-## 配置application.yml
+## Configuration application.yml
 ```bash
 server:
   port: 8081
@@ -104,28 +103,26 @@ file:
 
 ```
 
-## 打包
+## packaging
 ```bash
 mvn package
 ```
 
-## 运行
+## run
 
 ```bash
 java -jar .\target\flutter-admin-backend.jar
 ```
 
 ## live demo
-
 http://www.cairuoyu.com/flutter_admin
 
-更多图片请访问：https://github.com/cairuoyu/flutter_admin
+Visit the website for more pictures：https://github.com/cairuoyu/flutter_admin
 
 ![image](http://cairuoyu.com/screenshots/flutter_admin1.gif)
 
-
-## 加入讨论组
-### 加我微信拉你入群
+## Join Discussion Group
+### Add me to WeChat to pull you into the group
 ![image](http://cairuoyu.com/screenshots/qrcode_wechat_cry.png)
 
 ### QQ
