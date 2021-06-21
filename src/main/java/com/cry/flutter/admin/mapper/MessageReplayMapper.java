@@ -13,6 +13,8 @@ import com.cry.flutter.admin.vo.MessageReplayVO;
  * </p>
  *
  * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
  * @since 2021-03-30
  */
 public interface MessageReplayMapper extends BaseMapper<MessageReplay> {

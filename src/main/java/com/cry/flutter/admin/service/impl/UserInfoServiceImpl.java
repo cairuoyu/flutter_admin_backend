@@ -19,6 +19,17 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 
 
+
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
+ * @since 2020-11-01
+ */
 @Service("userInfoService")
 @Transactional
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements IUserInfoService {

@@ -27,6 +27,8 @@ import static com.cry.flutter.admin.constants.Constant.*;
  * </p>
  *
  * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
  * @since 2020-11-01
  */
 @CrossOrigin(origins = {"*"})

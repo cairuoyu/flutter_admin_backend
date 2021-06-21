@@ -7,6 +7,16 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
+ * @since 2021-03-11
+ */
 @Data
 public class SysLog extends BaseEntity implements Serializable {
     private String userId;//用户名字

@@ -28,6 +28,8 @@ import static com.cry.flutter.admin.constants.Constant.SUBSYSTEM_ID_FLUTTER_ADMI
  * </p>
  *
  * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
  * @since 2021-01-04
  */
 @CrossOrigin(origins = {"*"})

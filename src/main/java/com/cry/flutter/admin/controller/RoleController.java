@@ -18,6 +18,14 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p>
+ * 前端控制器
+ * </p>
+ *
+ * @author cairuoyu
+ * @since 2021-01-13
+ */
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping(value = "/role")

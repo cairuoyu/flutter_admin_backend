@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
  * @since 2020-09-26
  */
 public interface IDictItemService extends IService<DictItem> {
