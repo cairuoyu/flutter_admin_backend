@@ -49,9 +49,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                     .eq(!StringUtils.isEmpty(userInfo.getDeptId()), UserInfo::getDeptId, userInfo.getDeptId())
                     .eq(!StringUtils.isEmpty(userInfo.getGender()), UserInfo::getGender, userInfo.getGender());
         }
-//        String s = queryWrapper.getCustomSqlSegment();
-//        System.out.println(11111);
-//        System.out.println(s);
         IPage result = this.baseMapper.queryPage(requestBodyApiPage, queryWrapper);
         return result;
     }
