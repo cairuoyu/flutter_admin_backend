@@ -36,7 +36,7 @@ public class MenuController {
 
 
     @PostMapping("listAuth")
-    public ResponseBodyApi<List<Menu>> listAuth(@RequestBody RequestBodyApi<Menu> requestBody) {
+    public ResponseBodyApi<List<Menu>> listAuth(@RequestBody String subsystemId) {
         String userId = RequestUtil.getCurrentUserId();
         System.out.println(userId);
         if (ID_ADMIN.equals(userId) || ID_ADMIN1.equals(userId) || ID_ADMIN2.equals(userId)) {
@@ -44,7 +44,7 @@ public class MenuController {
                     .eq(Menu::getSubsystemId, SUBSYSTEM_ID_FLUTTER_ADMIN)
                     .orderByAsc(Menu::getOrderBy)));
         }
-        return new ResponseBodyApi<>(menuService.getMenuList(RequestUtil.getCurrentUserId()));
+        return new ResponseBodyApi<>(menuService.getMenuList(RequestUtil.getCurrentUserId(), subsystemId));
     }
 
     @PostMapping("list")

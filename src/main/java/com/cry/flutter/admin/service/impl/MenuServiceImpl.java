@@ -23,8 +23,8 @@ import java.util.List;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
     @Override
-    public List<Menu> getMenuList(String userId) {
-        return this.baseMapper.getMenuList(userId, Constant.SUBSYSTEM_ID_FLUTTER_ADMIN);
+    public List<Menu> getMenuList(String userId, String subsystemId) {
+        return this.baseMapper.getMenuList(userId, subsystemId);
     }
 
 }
