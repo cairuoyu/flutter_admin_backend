@@ -16,7 +16,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -65,7 +67,12 @@ public class UserController {
             User existUser = list.get(0);
             String token = JwtUtil.createJWT(existUser.getId());
             RequestUtil.getRequest().setAttribute("userId", existUser.getId());
-            return new ResponseBodyApi(token);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("token",token);
+            map.put("currentUserInfo", userInfoService.getCurrentUserInfo());
+
+            return new ResponseBodyApi(map);
         }
     }
 

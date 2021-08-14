@@ -67,18 +67,18 @@ public class UserInfoController {
     }
 
 
-    @PostMapping("getCurrentUserInfo")
-    public ResponseBodyApi getCurrentUserInfo() {
-        UserInfo userInfo = userInfoService.getOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getUserId, RequestUtil.getCurrentUserId()));
-        Dept dept = deptService.getOne(new QueryWrapper<Dept>().lambda().eq(Dept::getId, userInfo.getDeptId()));
-
-        UserInofWrapper userInofWrapper = new UserInofWrapper();
-        BeanUtils.copyProperties(userInfo, userInofWrapper);
-        if (dept != null) {
-            userInofWrapper.setDeptName(dept.getName());
-        }
-        return new ResponseBodyApi<UserInofWrapper>(userInofWrapper);
-    }
+//    @PostMapping("getCurrentUserInfo")
+//    public ResponseBodyApi getCurrentUserInfo() {
+//        UserInfo userInfo = userInfoService.getOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getUserId, RequestUtil.getCurrentUserId()));
+//        Dept dept = deptService.getOne(new QueryWrapper<Dept>().lambda().eq(Dept::getId, userInfo.getDeptId()));
+//
+//        UserInofWrapper userInofWrapper = new UserInofWrapper();
+//        BeanUtils.copyProperties(userInfo, userInofWrapper);
+//        if (dept != null) {
+//            userInofWrapper.setDeptName(dept.getName());
+//        }
+//        return new ResponseBodyApi<UserInofWrapper>(userInofWrapper);
+//    }
 
     @PostMapping("getById")
     public ResponseBodyApi getById(@RequestBody UserInfo userInfo) {

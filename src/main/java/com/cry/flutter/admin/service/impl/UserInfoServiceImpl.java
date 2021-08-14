@@ -7,22 +7,26 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cry.flutter.admin.common.RequestBodyApi;
-import com.cry.flutter.admin.mapper.UserInfoMapper;
+import com.cry.flutter.admin.entity.Dept;
 import com.cry.flutter.admin.entity.UserInfo;
+import com.cry.flutter.admin.mapper.UserInfoMapper;
+import com.cry.flutter.admin.service.IDeptService;
 import com.cry.flutter.admin.service.IUserInfoService;
+import com.cry.flutter.admin.utils.RequestUtil;
 import com.cry.flutter.admin.wrapper.UserInofWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
-
 
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author cairuoyu
@@ -33,6 +37,9 @@ import java.util.ArrayList;
 @Service("userInfoService")
 @Transactional
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements IUserInfoService {
+    @Resource(name = "deptServiceImpl")
+    IDeptService deptService;
+
     @Override
     public IPage<UserInofWrapper> page(RequestBodyApi<UserInfo> requestBodyApi) {
 
@@ -51,5 +58,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         }
         IPage result = this.baseMapper.queryPage(requestBodyApiPage, queryWrapper);
         return result;
+    }
+
+    @Override
+    public UserInofWrapper getCurrentUserInfo() {
+        UserInfo userInfo = getOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getUserId, RequestUtil.getCurrentUserId()));
+        Dept dept = deptService.getOne(new QueryWrapper<Dept>().lambda().eq(Dept::getId, userInfo.getDeptId()));
+
+        UserInofWrapper userInofWrapper = new UserInofWrapper();
+        BeanUtils.copyProperties(userInfo, userInofWrapper);
+        if (dept != null) {
+            userInofWrapper.setDeptName(dept.getName());
+        }
+        return userInofWrapper;
     }
 }
