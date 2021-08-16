@@ -43,6 +43,12 @@ public class SubsystemController {
 
 
     @Operation()
+    @PostMapping("listEnable")
+    public ResponseBodyApi<List<Subsystem>> listEnable(@RequestBody RequestBodyApi<SubsystemVO> requestBodyApi) {
+        return new ResponseBodyApi<>(subsystemService.list(new QueryWrapper<Subsystem>().lambda().eq(Subsystem::getState,ConstantDict.CODE_YESNO_YES)));
+    }
+
+    @Operation()
     @PostMapping("list")
     public ResponseBodyApi<List<Subsystem>> list(@RequestBody RequestBodyApi<SubsystemVO> requestBodyApi) {
         return new ResponseBodyApi<>(subsystemService.list(getQueryWrapper(requestBodyApi)));
