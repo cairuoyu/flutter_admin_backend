@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cry.flutter.admin.common.ResponseBodyApi;
 import com.cry.flutter.admin.entity.SettingDefaultTab;
 import com.cry.flutter.admin.service.ISettingDefaultTabService;
+import com.cry.flutter.admin.utils.RequestUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,11 +31,14 @@ public class SettingDefaultTabController {
 
     @PostMapping("list")
     public ResponseBodyApi<List<SettingDefaultTab>> list() {
-        return new ResponseBodyApi<>(settingDefaultTabService.list(new QueryWrapper<SettingDefaultTab>().lambda().orderByDesc(SettingDefaultTab::getCreateTime)));
+        return new ResponseBodyApi<>(settingDefaultTabService.list(new QueryWrapper<SettingDefaultTab>().lambda()
+                .eq(SettingDefaultTab::getUserId, RequestUtil.getCurrentUserId())
+                .orderByDesc(SettingDefaultTab::getCreateTime)));
     }
 
     @PostMapping("saveOrUpdate")
     public ResponseBodyApi saveOrUpdate(@RequestBody SettingDefaultTab settingDefaultTab) {
+        settingDefaultTab.setUserId(RequestUtil.getCurrentUserId());
         settingDefaultTabService.saveOrUpdate(settingDefaultTab);
         return new ResponseBodyApi();
     }
