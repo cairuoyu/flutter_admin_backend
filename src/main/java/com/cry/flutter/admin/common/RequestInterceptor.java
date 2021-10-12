@@ -1,7 +1,12 @@
 package com.cry.flutter.admin.common;
 
+import com.cry.flutter.admin.constants.Constant;
+import com.cry.flutter.admin.constants.ResponseCodeConstant;
 import com.cry.flutter.admin.utils.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -9,7 +14,20 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * <p>
+ * </p>
+ *
+ * @author cairuoyu
+ * @homepage: http://cairuoyu.com
+ * @github: https://github.com/cairuoyu/flutter_admin_backend
+ * @since 2020-10-12
+ */
 public class RequestInterceptor extends HandlerInterceptorAdapter {
+
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
@@ -21,23 +39,27 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        String authorization = request.getHeader("Authorization");
-        if (!StringUtils.isEmpty(authorization)) {
-            String token = authorization;
-
-            Claims claims = null;
-            try {
-                claims = JwtUtil.parseJWT(token);
-            } catch (Exception e) {
-                return true;
-            }
-            String userId = claims.getSubject();
-            request.setAttribute("userId", userId);
-            return true;
+        response.setContentType("application/json;charset=utf-8");
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isEmpty(authorization)) {
+            return false;
         }
+        String token = authorization;
 
-        return super.preHandle(request, response, handler);
+        Claims claims = null;
+        try {
+            claims = JwtUtil.parseJWT(token);
+        } catch (Exception e) {
+            return false;
+        }
+        String userId = claims.getSubject();
+        request.setAttribute("userId", userId);
+        Long expire = redisUtil.getExpire(Constant.REDIS_TOKEN_PRE + userId);
+        if (expire < 0) {
+            String res = new ObjectMapper().writeValueAsString(new ResponseBodyApi<>(ResponseCodeConstant.SESSION_EXPIRE_CODE, false, ResponseCodeConstant.SESSION_EXPIRE_MESSAGE));
+            response.getWriter().println(res);
+            return false;
+        }
+        return true;
     }
-
-
 }

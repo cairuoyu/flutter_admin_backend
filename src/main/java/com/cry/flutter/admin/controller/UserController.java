@@ -2,7 +2,9 @@ package com.cry.flutter.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cry.flutter.admin.common.Operation;
+import com.cry.flutter.admin.common.RedisUtil;
 import com.cry.flutter.admin.common.ResponseBodyApi;
+import com.cry.flutter.admin.constants.Constant;
 import com.cry.flutter.admin.entity.User;
 import com.cry.flutter.admin.entity.UserInfo;
 import com.cry.flutter.admin.service.IUserInfoService;
@@ -12,6 +14,7 @@ import com.cry.flutter.admin.utils.RequestUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -39,8 +43,11 @@ public class UserController {
     @Resource(name = "userInfoService")
     IUserInfoService userInfoService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @ApiOperation(value = "注册")
-    @ApiResponses({ @ApiResponse(code = 200, message = "OK", response = ResponseBodyApi.class) })
+    @ApiResponses({@ApiResponse(code = 200, message = "OK", response = ResponseBodyApi.class)})
     @Operation()
     @PostMapping("register")
     public ResponseBodyApi register(@RequestBody User user) throws Exception {
@@ -67,9 +74,10 @@ public class UserController {
             User existUser = list.get(0);
             String token = JwtUtil.createJWT(existUser.getId());
             RequestUtil.getRequest().setAttribute("userId", existUser.getId());
+            redisUtil.setEx(Constant.REDIS_TOKEN_PRE + existUser.getId(), token, 1, TimeUnit.HOURS);
 
-            Map<String,Object> map = new HashMap<>();
-            map.put("token",token);
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", token);
             map.put("currentUserInfo", userInfoService.getCurrentUserInfo());
 
             return new ResponseBodyApi(map);
