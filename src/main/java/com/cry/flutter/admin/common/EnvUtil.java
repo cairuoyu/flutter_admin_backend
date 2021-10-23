@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class EnvUtils {
-//    @Value("${test.aa}")
-//    private String aa;
+public class EnvUtil {
+    @Value("${token.timeout}")
+    private Long tokenTimeout;
 
 }

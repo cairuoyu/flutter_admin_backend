@@ -1,6 +1,7 @@
 package com.cry.flutter.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cry.flutter.admin.common.EnvUtil;
 import com.cry.flutter.admin.common.Operation;
 import com.cry.flutter.admin.common.RedisUtil;
 import com.cry.flutter.admin.common.ResponseBodyApi;
@@ -46,6 +47,9 @@ public class UserController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private EnvUtil envUtil;
+
     @ApiOperation(value = "注册")
     @ApiResponses({@ApiResponse(code = 200, message = "OK", response = ResponseBodyApi.class)})
     @Operation()
@@ -74,7 +78,7 @@ public class UserController {
             User existUser = list.get(0);
             String token = JwtUtil.createJWT(existUser.getId());
             RequestUtil.getRequest().setAttribute("userId", existUser.getId());
-            redisUtil.setEx(Constant.REDIS_TOKEN_PRE + existUser.getId(), token, 1, TimeUnit.HOURS);
+            redisUtil.setEx(Constant.REDIS_TOKEN_PRE + existUser.getId(), token, envUtil.getTokenTimeout(), TimeUnit.SECONDS);
 
             Map<String, Object> map = new HashMap<>();
             map.put("token", token);
