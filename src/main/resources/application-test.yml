@@ -1,0 +1,8 @@
+datasource.url: jdbc:mysql://cairuoyu.com:3306/sid?serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+datasource.username: us
+datasource.password: pw
+
+file.upload-path: http://www.cairuoyu.com/f/p4/
+file.download-path: /home/cry/projects/f/p4/
+
+token.timeout: 3600

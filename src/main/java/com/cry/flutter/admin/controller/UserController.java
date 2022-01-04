@@ -71,6 +71,7 @@ public class UserController {
     @Operation()
     @PostMapping("login")
     public ResponseBodyApi login(@RequestBody User user) throws Exception {
+//        String password = DigestUtils.md5DigestAsHex((user.getPassword() + "slat").getBytes());
         List<User> list = userService.list(new QueryWrapper<User>().lambda().eq(User::getUserName, user.getUserName()).eq(User::getPassword, user.getPassword()));
         if (CollectionUtils.isEmpty(list)) {
             return new ResponseBodyApi(false, "账号或密码错误");

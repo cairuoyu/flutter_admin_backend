@@ -2,12 +2,13 @@ server:
   port: 9094
 
 spring:
+  profiles:
+    active: test
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    #配置数据库连接
-    url: jdbc:mysql://cairuoyu.com:3306/sid?serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
-    username: us
-    password: ps
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
     hikari:
       max-lifetime: 60000
   jackson:
@@ -28,13 +29,8 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/**.xml
 
 file:
-  #文件上传地址
-  upload-path: G:\apache-tomcat-9.0.34-8093\webapps\download\
-  #文件下载地址
-  downloadPath: http://localhost:8093/download/
-
-#  downloadPath: http://www.cairuoyu.com/f/p4/
-#  upload-path: /home/cry/projects/f/p4/
+  upload-path: ${file.upload-path}
+  download-path: ${file.download-path}
 
 token:
-  timeout: 30
+  timeout: ${token.timeout}
