@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <springProperty scope="context" name="logHome" source="logging.path" defaultValue="logs"/>
+  <!-- 日志存放目录 -->
+  <property name="LOG_HOME" value="${logHome}"/>
+
+  <!-- 开发, 测试环境 -->
+  <springProfile name="dev">
+    <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,%i索引【从数字0开始递增】,,, -->
+    <!-- appender是configuration的子节点，是负责写日志的组件。 -->
+    <!-- ConsoleAppender：把日志输出到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+        <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
+        <charset>UTF-8</charset>
+      </encoder>
+    </appender>
+
+    <root level="info">
+      <appender-ref ref="STDOUT"/>
+    </root>
+  </springProfile>
+
+  <!-- 生产环境 -->
+  <springProfile name="prod,test">
+    <!-- RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+    <!-- 以下的大概意思是：1.先按日期存日志，日期变了，将前一天的日志文件名重命名为XXX%日期%索引，新的日志仍然是info.log -->
+    <!--                2.如果日期没有发生变化，但是当前日志的文件大小超过1KB时，对当前日志进行分割 重命名-->
+    <appender name="DEFAULT-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <File>${LOG_HOME}/info.log</File>
+      <!-- rollingPolicy:当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名。 -->
+      <!-- TimeBasedRollingPolicy： 最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动 -->
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <!-- 活动文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
+        <!-- 文件名：log/2018-12-05_info.0.log -->
+        <fileNamePattern>${LOG_HOME}/%d/%d{yyyy-MM-dd}_info.%i.log</fileNamePattern>
+        <!-- 每产生一个日志文件，该日志文件的保存期限为7天 -->
+        <maxHistory>30</maxHistory>
+        <maxFileSize>10MB</maxFileSize>
+        <totalSizeCap>10GB</totalSizeCap>
+      </rollingPolicy>
+
+      <encoder>
+        <!-- pattern节点，用来设置日志的输入格式 -->
+        <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <!-- 记录日志的编码 -->
+        <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+      </encoder>
+    </appender>
+
+    <!-- 异步输出 -->
+    <appender name="ASYNC-DEFAULT" class="ch.qos.logback.classic.AsyncAppender">
+      <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+      <discardingThreshold>0</discardingThreshold>
+      <!-- 更改默认的队列的深度,该值会影响性能.默认值为256, 例子中8192为8k -->
+      <queueSize>8192</queueSize>
+      <!-- 添加附加的appender,最多只能添加一个 -->
+      <appender-ref ref="DEFAULT-APPENDER"/>
+    </appender>
+
+    <!-- error.log  -->
+    <appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_HOME}/error.log</file>
+
+      <!-- 过滤器，只记录 ERROR 级别的日志 -->
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <level>ERROR</level>
+        <onMatch>ACCEPT</onMatch>
+        <onMismatch>DENY</onMismatch>
+      </filter>
+
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_HOME}/%d/%d{yyyy-MM-dd}_error.%i.log</fileNamePattern>
+        <maxHistory>360</maxHistory>
+        <maxFileSize>10MB</maxFileSize>
+      </rollingPolicy>
+      <encoder>
+        <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        <!-- 记录日志的编码 -->
+        <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+      </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+        <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
+        <charset>UTF-8</charset>
+      </encoder>
+    </appender>
+
+    <!-- root -->
+    <root level="info">
+      <appender-ref ref="ASYNC-DEFAULT"/>
+      <!--error日志不建议改异步方式 -->
+      <appender-ref ref="ERROR-APPENDER"/>
+      <appender-ref ref="STDOUT"/>
+    </root>
+  </springProfile>
+</configuration>
+
+
+

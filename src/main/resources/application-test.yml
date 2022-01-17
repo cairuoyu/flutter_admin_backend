@@ -2,6 +2,9 @@ datasource.url: jdbc:mysql://cairuoyu.com:3306/sid?serverTimezone=GMT%2B8&useSSL
 datasource.username: us
 datasource.password: pw
 
+logging.config: F:\projects\f\flutter_admin_backend\src\main\resources\logback-spring.xml
+logging.path: D:\logs\fa
+
 file.upload-path: http://www.cairuoyu.com/f/p4/
 file.download-path: /home/cry/projects/f/p4/
 

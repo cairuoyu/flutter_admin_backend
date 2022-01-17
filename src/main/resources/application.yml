@@ -22,7 +22,9 @@ spring:
     host: localhost
     port: 6379
 
-debug: true
+logging:
+  config: ${logging.config}
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
