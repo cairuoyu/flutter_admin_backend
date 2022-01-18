@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: test
+    active: dev
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: ${datasource.url}
@@ -19,8 +19,10 @@ spring:
       max-request-size: 10000000
   redis:
     database: 0
-    host: localhost
-    port: 6379
+    host: ${redis.host}
+    port: ${redis.port}
+    password: ${redis.password}
+
 
 logging:
   config: ${logging.config}
