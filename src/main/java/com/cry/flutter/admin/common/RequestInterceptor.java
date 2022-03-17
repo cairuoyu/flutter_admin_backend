@@ -13,6 +13,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -27,11 +29,16 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private RedisUtil redisUtil;
+    private List<String> whiteList = new ArrayList<String>(){{
+        add("/loginByCode");
+        add("/user/login");
+        add("/user/register");
+    }};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
-        if (servletPath.indexOf("loginByCode") > 0 || servletPath.indexOf("user/login") > 0) {
+        if(whiteList.contains(servletPath)){
             return true;
         }
         String method = request.getMethod();
