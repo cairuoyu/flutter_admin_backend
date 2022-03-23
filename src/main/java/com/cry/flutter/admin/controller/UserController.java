@@ -6,8 +6,10 @@ import com.cry.flutter.admin.common.Operation;
 import com.cry.flutter.admin.common.RedisUtil;
 import com.cry.flutter.admin.common.ResponseBodyApi;
 import com.cry.flutter.admin.constants.Constant;
+import com.cry.flutter.admin.entity.SettingDefaultTab;
 import com.cry.flutter.admin.entity.User;
 import com.cry.flutter.admin.entity.UserInfo;
+import com.cry.flutter.admin.service.ISettingDefaultTabService;
 import com.cry.flutter.admin.service.IUserInfoService;
 import com.cry.flutter.admin.service.IUserService;
 import com.cry.flutter.admin.utils.JwtUtil;
@@ -44,6 +46,9 @@ public class UserController {
     @Resource(name = "userInfoService")
     IUserInfoService userInfoService;
 
+    @Resource(name = "settingDefaultTabServiceImpl")
+    ISettingDefaultTabService settingDefaultTabService;
+
     @Autowired
     private RedisUtil redisUtil;
 
@@ -64,6 +69,13 @@ public class UserController {
         userInfo.setUserId(user.getId());
         userInfo.setUserName(user.getUserName());
         userInfoService.save(userInfo);
+
+        SettingDefaultTab settingDefaultTab = new SettingDefaultTab();
+        settingDefaultTab.setUserId(user.getId());
+        settingDefaultTab.setName("Dashboard");
+        settingDefaultTab.setNameEn("Dashboard");
+        settingDefaultTab.setUrl("/dashboard");
+        settingDefaultTabService.save(settingDefaultTab);
 
         return new ResponseBodyApi();
     }
