@@ -16,4 +16,5 @@ import lombok.Data;
 public class User extends BizBaseEntity {
     private String userName;
     private String password;
+    private String face;
 }
