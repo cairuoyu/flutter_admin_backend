@@ -6,9 +6,8 @@ import com.cry.flutter.admin.constants.Constant;
 import com.cry.flutter.admin.entity.SettingDefaultTab;
 import com.cry.flutter.admin.entity.User;
 import com.cry.flutter.admin.entity.UserInfo;
-import com.cry.flutter.admin.service.ISettingDefaultTabService;
-import com.cry.flutter.admin.service.IUserInfoService;
-import com.cry.flutter.admin.service.IUserService;
+import com.cry.flutter.admin.service.*;
+import com.cry.flutter.admin.utils.FileUtil;
 import com.cry.flutter.admin.utils.JwtUtil;
 import com.cry.flutter.admin.utils.RequestUtil;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +16,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -39,6 +40,9 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    @Autowired
+    private FileProperties fileProperties;
+
     @Resource(name = "userService")
     IUserService userService;
 
@@ -47,6 +51,9 @@ public class UserController {
 
     @Resource(name = "settingDefaultTabServiceImpl")
     ISettingDefaultTabService settingDefaultTabService;
+
+    @Resource(name = "fileServiceImpl")
+    IFileService fileService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -58,16 +65,25 @@ public class UserController {
     @ApiResponses({@ApiResponse(code = 200, message = "OK", response = ResponseBodyApi.class)})
     @Operation()
     @PostMapping("register")
-    public ResponseBodyApi register(@RequestBody User user) throws Exception {
+    public ResponseBodyApi register(@RequestParam(value = "file", required = false) MultipartFile mf, User user) throws Exception {
         List<User> userList = userService.list(new QueryWrapper<User>().lambda().eq(User::getUserName, user.getUserName()));
         if (!userList.isEmpty()) {
             return new ResponseBodyApi(false, "此账号已存在");
         }
         userService.save(user);
+
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
         userInfo.setUserName(user.getUserName());
         userInfoService.save(userInfo);
+
+        if (mf != null) {
+            String filename = StringUtils.cleanPath(mf.getOriginalFilename());
+            filename = FileUtil.codeFileName(filename, "png");
+            userInfo.setAvatarUrl(fileProperties.getDownloadPath() + filename);
+            fileService.storeFile(mf, userInfo.getId(), filename);
+            userInfoService.updateById(userInfo);
+        }
 
         SettingDefaultTab settingDefaultTab = new SettingDefaultTab();
         settingDefaultTab.setUserId(user.getId());
