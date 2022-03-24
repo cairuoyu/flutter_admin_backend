@@ -1,10 +1,7 @@
 package com.cry.flutter.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cry.flutter.admin.common.EnvUtil;
-import com.cry.flutter.admin.common.Operation;
-import com.cry.flutter.admin.common.RedisUtil;
-import com.cry.flutter.admin.common.ResponseBodyApi;
+import com.cry.flutter.admin.common.*;
 import com.cry.flutter.admin.constants.Constant;
 import com.cry.flutter.admin.entity.SettingDefaultTab;
 import com.cry.flutter.admin.entity.User;
@@ -17,6 +14,7 @@ import com.cry.flutter.admin.utils.RequestUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @author cairuoyu
  * @since 2021-01-13
  */
+@Slf4j
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping(value = "/user")
@@ -88,18 +87,35 @@ public class UserController {
         if (CollectionUtils.isEmpty(list)) {
             return new ResponseBodyApi(false, "账号或密码错误");
         } else {
-            User existUser = list.get(0);
-            String token = JwtUtil.createJWT(existUser.getId());
-            RequestUtil.getRequest().setAttribute("userId", existUser.getId());
-            redisUtil.setEx(Constant.REDIS_TOKEN_PRE + existUser.getId(), token, envUtil.getTokenTimeout(), TimeUnit.SECONDS);
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("token", token);
-            map.put("currentUserInfo", userInfoService.getCurrentUserInfo());
-
-            return new ResponseBodyApi(map);
+            return new ResponseBodyApi(loginSuccess(list.get(0)));
         }
     }
 
+    @Operation()
+    @PostMapping("loginByFace")
+    public ResponseBodyApi loginByFace(@RequestBody String face) throws Exception {
+        String[] face1 = face.split(",");
+        List<User> userList = userService.list(new QueryWrapper<User>().lambda().isNotNull(User::getFace));
+        for (User user : userList) {
+            String[] face2 = user.getFace().split(",");
+            double e = Utils.euclideanDistance(face1, face2);
+            log.info("--face:{}-{}", user.getUserName(), e);
+            if (e < 1) {
+                return new ResponseBodyApi(loginSuccess(user));
+            }
+        }
+        return new ResponseBodyApi(false, "你还未注册人脸，请先注册");
+    }
+
+    Map<String, Object> loginSuccess(User user) {
+        String token = JwtUtil.createJWT(user.getId());
+        RequestUtil.getRequest().setAttribute("userId", user.getId());
+        redisUtil.setEx(Constant.REDIS_TOKEN_PRE + user.getId(), token, envUtil.getTokenTimeout(), TimeUnit.SECONDS);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("currentUserInfo", userInfoService.getCurrentUserInfo());
+        return map;
+    }
 
 }

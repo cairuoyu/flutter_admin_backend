@@ -32,6 +32,7 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
     private List<String> whiteList = new ArrayList<String>(){{
         add("/loginByCode");
         add("/user/login");
+        add("/user/loginByFace");
         add("/user/register");
     }};
 
