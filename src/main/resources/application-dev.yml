@@ -6,7 +6,7 @@ redis.host: localhost
 redis.port: 6379
 redis.password:
 
-logging.config: F:\projects\f\flutter_admin_backend\src\main\resources\logback-spring.xml
+logging.config: classpath:logback-spring.xml
 logging.path: D:\logs\fa
 
 file.upload-path: http://www.cairuoyu.com/f/p4/
