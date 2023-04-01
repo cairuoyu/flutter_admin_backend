@@ -5,6 +5,7 @@ import com.cry.flutter.admin.constants.ResponseCodeConstant;
 import com.cry.flutter.admin.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
@@ -25,6 +26,7 @@ import java.util.List;
  * @github: https://github.com/cairuoyu/flutter_admin_backend
  * @since 2020-10-12
  */
+@Log4j2
 public class RequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -34,6 +36,7 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         add("/user/login");
         add("/user/loginByFace");
         add("/user/register");
+        add("/userInfo/page");
     }};
 
     @Override
@@ -58,6 +61,7 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         try {
             claims = JwtUtil.parseJWT(token);
         } catch (Exception e) {
+            log.info(e.getMessage());
             return false;
         }
         String userId = claims.getSubject();
