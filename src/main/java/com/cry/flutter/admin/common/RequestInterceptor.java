@@ -37,6 +37,7 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         add("/user/loginByFace");
         add("/user/register");
         add("/userInfo/page");
+        add("/dict/map");
     }};
 
     @Override
